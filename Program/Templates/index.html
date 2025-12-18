@@ -41,7 +41,7 @@
                     </button>
                 </p>
             </div><!-- /.col-lg-4 -->
-            <div class="col-lg-4"> <img src="/static/Scisor.png"
+            <div class="col-lg-4"> <img src="/static/scissors.png"
                                     class="bd-placeholder-img rounded-circle" 
                                     width="140"
                                     height="140"
@@ -76,6 +76,19 @@
             </div>
         </div>
     </div>
+
+    <hr class="my-5">
+
+    <div class="container text-center">
+        <h3 id="winner-text" class="mb-3"></h3>
+
+        <div id="winner-image"></div>
+
+        <button id="reset-btn" class="btn btn-primary mt-4" style="display: none;">
+            Jogar novamente
+        </button>
+    </div>
+
     <script>
         let currentPlayer = 1;
 
@@ -88,12 +101,74 @@
                 if (currentPlayer === 1) {
                     document.getElementById("player1-choice").textContent = choice;
                     currentPlayer = 2;
+                    player1Choice = choice;
                     alert("Player 2, your turn!");
                 } else if (currentPlayer === 2) {
                     document.getElementById("player2-choice").textContent = choice;
+                    player2Choice = choice;
+                    checkWinner();
                     currentPlayer = 1;
                 }
             });
         });
+
+
+
+    let player1Choice = null;
+    let player2Choice = null;
+
+    function checkWinner() {
+        const winnerText = document.getElementById("winner-text");
+        const winnerImage = document.getElementById("winner-image");
+        const resetBtn = document.getElementById("reset-btn");
+
+        // Caso empate
+        if (player1Choice === player2Choice) {
+            winnerText.textContent = "Empate!";
+            winnerImage.innerHTML = "";
+            resetBtn.style.display = "inline-block";
+            return;
+        }
+
+        let winner = "";
+        let winningChoice = "";
+
+        if (
+            (player1Choice === "Rock" && player2Choice === "Scissors") ||
+            (player1Choice === "Paper" && player2Choice === "Rock") ||
+            (player1Choice === "Scissors" && player2Choice === "Paper")
+        ) {
+            winner = "Player 1";
+            winningChoice = player1Choice;
+        } else {
+            winner = "Player 2";
+            winningChoice = player2Choice;
+        }
+
+        winnerText.textContent = `Vencedor: ${winner}`;
+
+        winnerImage.innerHTML = `
+            <img src="/static/${winningChoice.toLowerCase()}.png"
+                 width="140"
+                 height="140"
+                 class="rounded-circle mt-3">
+        `;
+
+        resetBtn.style.display = "inline-block";
+    }
+    document.getElementById("reset-btn").addEventListener("click", () => {
+    currentPlayer = 1;
+    player1Choice = null;
+    player2Choice = null;
+
+    document.getElementById("player1-choice").innerHTML =
+        '<p class="fs-4 text-muted">Waiting...</p>';
+    document.getElementById("player2-choice").innerHTML =
+        '<p class="fs-4 text-muted">Waiting...</p>';
+
+    document.getElementById("winner-text").textContent = "";
+    document.getElementById("winner-image").innerHTML = "";
+    document.getElementById("reset-btn").style.display = "none";
+    });
     </script>
 </body>
