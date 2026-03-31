@@ -99,12 +99,14 @@
                 const choice = button.dataset.choice;
 
                 if (currentPlayer === 1) {
-                    document.getElementById("player1-choice").textContent = choice;
+                    document.getElementById("player1-choice").innerHTML = '<p class="fs-4 text-success">Escolha feita!</p>';
                     currentPlayer = 2;
                     player1Choice = choice;
                     alert("Player 2, your turn!");
                 } else if (currentPlayer === 2) {
+                    document.getElementById("player1-choice").textContent = player1Choice;
                     document.getElementById("player2-choice").textContent = choice;
+                    
                     player2Choice = choice;
                     checkWinner();
                     currentPlayer = 1;
